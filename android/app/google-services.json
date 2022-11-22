@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "578455180403",
+    "project_id": "reverpot-project",
+    "storage_bucket": "reverpot-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:578455180403:android:e18914086d2d86f9ed0606",
+        "android_client_info": {
+          "package_name": "shop.mtcoding.revierpod_firestore_stream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "578455180403-k4p0ffn29vmj85th7am8bak0q7q5np4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHWbmFA4pV3EC8Dc6PrjX0oB2bdehafrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "578455180403-k4p0ffn29vmj85th7am8bak0q7q5np4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
