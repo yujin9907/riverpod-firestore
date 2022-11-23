@@ -1,36 +1,61 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:revierpod_firestore_stream/firebase_options.dart';
-import 'package:revierpod_firestore_stream/widget/pages/chat_room/chat_room_page.dart';
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 
-// 위젯에서 프로바이더를 일고 사용하기 위해 프로바이더 위젯으로 감쌈
-// 여기서 프로바이더가 저장되는 곳입니다.
-
-void main() async {
-  // firebase 초기화 await -> 통신-응답 이기 때문에 비동기 설정(async)
-  WidgetsFlutterBinding.ensureInitialized(); // 메인 메서드에 비동기 작업이 있으면 필요
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  runApp(
-    // For widgets to be able to read providers, we need to wrap the entire
-    // application in a "ProviderScope" widget.
-    // This is where the state of our providers will be stored.
-    ProviderScope(
-      child: MyApp(),
-    ),
-  );
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  KakaoSdk.init(
+      nativeAppKey: '14d0f342b7d1c6f571255f79dd5b0b46',
+      javaScriptAppKey: '3dd76848f413067295487fd450915d3c');
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  void _get_user_info() async {
+    try {
+      User user = await UserApi.instance.me();
+      print('사용자 정보 요청 성공'
+          '\n회원번호: ${user.id}'
+          '\n닉네임: ${user.kakaoAccount?.profile?.nickname}');
+    } catch (error) {
+      print('사용자 정보 요청 실패 $error');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: ChatRoomPage(),
-    );
+        home: Container(
+            color: Colors.white,
+            child: Center(
+                child: RaisedButton(
+                    child: Text("카카오 로그인"),
+                    onPressed: () async {
+                      if (await isKakaoTalkInstalled()) {
+                        try {
+                          await UserApi.instance.loginWithKakaoTalk();
+                          print('카카오톡으로 로그인 성공');
+                          _get_user_info();
+                        } catch (error) {
+                          print('카카오톡으로 로그인 실패 $error');
+                          // 카카오톡에 연결된 카카오계정이 없는 경우, 카카오계정으로 로그인
+                          try {
+                            await UserApi.instance.loginWithKakaoAccount();
+                            print('카카오계정으로 로그인 성공');
+                            _get_user_info();
+                          } catch (error) {
+                            print('카카오계정으로 로그인 실패 $error');
+                          }
+                        }
+                      } else {
+                        try {
+                          await UserApi.instance.loginWithKakaoAccount();
+                          print('카카오계정으로 로그인 성공');
+                          _get_user_info();
+                        } catch (error) {
+                          print('카카오계정으로 로그인 실패 $error');
+                        }
+                      }
+                    }))));
   }
 }

@@ -5,4 +5,17 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <activity
+        android:name="com.kakao.sdk.flutter.AuthCodeCustomTabsActivity"
+        android:exported="true">
+        <intent-filter android:label="flutter_web_auth">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <!-- Redirect URI, "kakao${YOUR_NATIVE_APP_KEY}://oauth" 형식 -->
+            <data android:scheme="kakao14d0f342b7d1c6f571255f79dd5b0b46" android:host="oauth"/>
+        </intent-filter>
+    </activity>
 </manifest>
+
